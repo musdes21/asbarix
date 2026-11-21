@@ -36,5 +36,7 @@ jobs:
         run: node --test tests/api.test.mjs
       - name: Product and retail pricing tests
         run: node --test tests/product-pricing.test.mjs tests/retail-pricing.test.mjs
+      - name: Simplified workspace integration checks
+        run: node --test tests/simplified-ui.test.mjs
       - name: Build production assets
         run: npm run build
