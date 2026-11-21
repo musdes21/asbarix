@@ -82,6 +82,7 @@
     if (options) body.append(options);
     side.insertBefore(details, $('sh-err') || null);
     cleanEmptyGroups(side);
+    Array.from(side.querySelectorAll('h3')).find(h => h.textContent.trim() === 'الكمية والتكلفة')?.replaceChildren('الكمية');
     openOnError('sh-err', details);
 
     const main = tab.querySelector('.panel.main');
@@ -105,6 +106,7 @@
     if (option) body.append(option);
     side.insertBefore(details, $('st-err') || null);
     cleanEmptyGroups(side);
+    Array.from(side.querySelectorAll('h3')).find(h => h.textContent.trim() === 'الكمية والتكلفة')?.replaceChildren('الكمية');
     openOnError('st-err', details);
 
     const main = tab.querySelector('.panel.main');
@@ -133,12 +135,17 @@
     if (summary) summary.textContent = 'خيارات القص والتسعير المتقدمة';
     const anchor = details.querySelector('h3');
     const moved = [];
+    const pricingControls = side.querySelector('.profit-control');
+    if (pricingControls) moved.push(pricingControls);
     for (const id of ['sale-rate', 'ac-t', 'ac-gap']) {
       const field = $(id)?.closest('.field');
       if (field) moved.push(field);
     }
     const rotate = $('ac-rotwrap');
     if (rotate) moved.push(rotate);
+    // Extra refresh is useful but does not need to occupy the primary workflow.
+    const refresh = $('sale-material')?.parentElement?.querySelector('button.chip');
+    if (refresh) moved.push(refresh);
     moved.forEach(node => details.insertBefore(node, anchor || null));
     cleanEmptyGroups(side);
     openOnError('ac-err', details);
