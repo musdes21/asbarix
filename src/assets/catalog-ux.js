@@ -131,7 +131,13 @@ function presets(){
  }
  if(acrylic){
   const list=[['5 × 7 سم',5,7],['10 × 15 سم',10,15],['15 × 20 سم',15,20],['20 × 30 سم',20,30]];
-  acrylic.insertBefore(createSelect('المقاسات الشائعة للأكريليك',list.map((v,i)=>({value:i,label:v[0]})),i=>{setInput('ac-w',list[i][1]);setInput('ac-h',list[i][2]);}),acrylic.firstChild);
+  const picker=createSelect('المقاس بالسنتيمتر',[{value:'custom',label:'مقاس مخصص — أدخل العرض والطول'},...list.map((v,i)=>({value:i,label:v[0]}))],i=>{
+   if(i==='custom'){$('ac-w').focus();return;}
+   document.querySelector('#ac-shape [data-v="rect"]')?.click();setInput('ac-w',list[i][1]);setInput('ac-h',list[i][2]);
+  });
+  acrylic.insertBefore(picker,acrylic.firstChild);
+  const sync=()=>{const n=window.CupLib.parseNum;const rect=document.querySelector('#ac-shape [aria-pressed="true"]')?.dataset.v==='rect';const index=rect?list.findIndex(v=>v[1]===n($('ac-w').value)&&v[2]===n($('ac-h').value)):-1;picker.querySelector('select').value=index<0?'custom':String(index);};
+  ['input','change','click'].forEach(type=>acrylic.addEventListener(type,sync));sync();
  }
  const form=$('offset-form');if(form){
   const presets=[['SRA3 — 32 × 45 سم',320,450],['SRA3 — 33 × 48 سم',330,480],['50 × 70 سم',500,700],['70 × 100 سم',700,1000]];

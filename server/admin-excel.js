@@ -2,7 +2,7 @@ import ExcelJS from 'exceljs';
 import { randomUUID } from 'node:crypto';
 import { configured,pipeline } from '../api/_redis.js';
 import { session,parseBody } from '../api/_session.js';
-import { catalog } from '../api/_pricing.js';
+import { catalog, PRICE_KEY } from '../api/_pricing.js';
 import { supplierCatalog,supplierKey,offerKey } from '../api/_suppliers.js';
 
 // XLSX is read and written only on the server after administrator authentication.
@@ -114,7 +114,7 @@ export default async function handler(req,res){
   if(wb.worksheets.length>(type==='prices'?1:2))throw Error('عدد أوراق الملف غير متوقع.');
   if(type==='prices'){
    const rows=validatePrices(wb,await catalog());
-   await pipeline([['SET','montage:prices',JSON.stringify({updatedAt:new Date().toISOString(),items:rows.items})]]);
+   await pipeline([['SET',PRICE_KEY,JSON.stringify({updatedAt:new Date().toISOString(),items:rows.items})]]);
    return res.status(200).json({ok:true,updated:rows.rows});
   }
   const data=validateSuppliers(wb,await supplierCatalog());

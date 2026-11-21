@@ -3,7 +3,7 @@ import retailPrices from '../server/retail-prices.js';
 import { configured, pipeline } from "./_redis.js";
 import { isAdmin, isTeam, parseBody } from "./_session.js";
 
-const KEY = "montage:prices";
+import { PRICE_KEY as KEY } from './_pricing.js';
 const num = (v) => (v === null || v === "" ? null : Number(v));
 const valid = (v) => v === null || (Number.isFinite(v) && v >= 0 && v < 1e6);
 

@@ -499,7 +499,7 @@ header.top{padding-block:28px 14px}.brand .logo{background:#fff;border-radius:10
   <div class="calc-layout">
     <div class="panel side">
       <h3 class="mt">الخامة والعميل</h3>
-      <p class="hint">الأسعار الرسمية والصلاحيات تعتمدها الإدارة. أبعاد الأكريليك بالسنتيمتر، والتسعير على مساحة سم².</p>
+      <p class="hint">أدخل العرض والطول بالسنتيمتر والكمية. السعر = سعر سم² × العرض × الطول × الكمية. سعر الأفراد ضعف سعر محلات الدعاية.</p>
       <div class="field"><label for="sale-search">ابحث عن خامة أو خدمة</label><input class="sel" id="sale-search" type="search" placeholder="مثال: سعودي شفاف ٦ ملم"></div>
       <div class="field"><label for="sale-material">الخامة أو الخدمة</label><select class="sel" id="sale-material"></select></div>
       <div class="field"><label for="sale-client">نوع العميل</label><select class="sel" id="sale-client"><option value="1">محلات الدعاية</option><option value="2">الأفراد</option></select></div>
@@ -1390,9 +1390,9 @@ function acrylicCalc(){
   const circle=segVal("ac-shape")==="circle";
   $("ac-hf").hidden=circle; $("ac-wl").textContent=circle?"القطر":"العرض"; $("ac-rotwrap").hidden=circle;
   const custom=$("ac-sheet").value==="custom"; $("ac-custom").hidden=!custom;
-  const spec=[{id:"ac-w",name:circle?"القطر":"العرض",max:300},{id:"ac-gap",name:"المسافة بين القطع",max:50,zeroOk:1},{id:"ac-margin",name:"هامش الحافة",max:100,zeroOk:1},
+  const spec=[{id:"ac-w",name:circle?"القطر":"العرض",max:400},{id:"ac-gap",name:"المسافة بين القطع",max:50,zeroOk:1},{id:"ac-margin",name:"هامش الحافة",max:100,zeroOk:1},
     {id:"ac-qty",name:"عدد القطع",max:1e7,int:1},{id:"ac-price",name:"سعر اللوح",optional:1,zeroOk:1,max:1e6}];
-  if(!circle) spec.push({id:"ac-h",name:"الطول",max:300});
+  if(!circle) spec.push({id:"ac-h",name:"الطول",max:400});
   if(custom) spec.push({id:"ac-sw",name:"عرض اللوح",max:400},{id:"ac-sh",name:"طول اللوح",max:400});
   const c=check(spec);
   if(c.errs.length){ showErrs("ac",c.errs,c.bad); $("ac-dl").disabled=true; return; }
