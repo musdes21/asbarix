@@ -64,8 +64,10 @@
     function syncNav() {
       const tab = (location.hash || '#sheets').slice(1);
       selects.forEach(({ select, keys }) => {
-        select.value = keys.includes(tab) ? tab : '';
-        select.classList.toggle('is-active', keys.includes(tab));
+        const active = keys.includes(tab);
+        select.value = active ? tab : '';
+        select.classList.toggle('is-active', active);
+        if (active) select.scrollIntoView({ block: 'nearest', inline: 'nearest' });
       });
     }
     window.addEventListener('hashchange', syncNav);
