@@ -1,36 +1,40 @@
-name: Montage checks
+name: Release checks
+
 on:
   pull_request:
-    branches:
-      - codex/asbarix-v2-identity
-      - codex/montage-offset-excel-pricing-20261108
-      - codex/montage-product-catalog-search-20261108
-      - codex/montage-sequential-sku-gifts-20261108
-      - main
+    branches: [production, main]
   push:
-    branches:
-      - codex/montage-sequential-sku-gifts-20261108
-      - codex/montage-barcode-scan-product-card-20261108
-      - codex/asbarix-remove-linear-meter-20261108
-      - codex/asbarix-unassigned-ubc-labels-20261108
+    branches: [production]
   workflow_dispatch:
+
 permissions:
   contents: read
+
+concurrency:
+  group: release-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  check:
+  verify:
+    name: Test and build (Node 22)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout
+      - name: Checkout source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-      - name: Setup Node.js 22
+      - name: Set up Node 22
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '22'
-      - name: Install
+      - name: Install dependencies
         run: npm install --ignore-scripts --no-audit --no-fund
-      - name: Run tests
+      - name: Core regression tests
         run: npm test
-      - name: Build static frontend
+      - name: API and authorization tests
+        run: node --test tests/api.test.mjs
+      - name: Product and retail pricing tests
+        run: node --test tests/product-pricing.test.mjs tests/retail-pricing.test.mjs
+      - name: Build production assets
         run: npm run build
