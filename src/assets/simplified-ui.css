@@ -129,3 +129,33 @@
 @media (prefers-reduced-motion: reduce) {
   .ui-fold, .ui-nav-select { scroll-behavior: auto; transition: none; }
 }
+
+/* Compact workspace header: tools and results get the visual priority. */
+header.top { padding-block: 14px 8px; }
+.designer-hub { padding-top: 0; padding-bottom: 8px; }
+.designer-hub .hub-welcome {
+  min-height: 44px;
+  margin-bottom: 0;
+  gap: 12px;
+  padding-block: 6px;
+}
+.designer-hub .hub-eyebrow,
+.designer-hub .hub-welcome p { display: none; }
+.designer-hub .hub-welcome h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.designer-hub .hub-actions { gap: 6px; flex-wrap: wrap; }
+.designer-hub .hub-actions a,
+.designer-hub .hub-actions button {
+  font-size: 12px;
+  padding: 7px 10px;
+  min-height: 36px;
+}
+@media (max-width: 720px) {
+  .designer-hub .hub-welcome { gap: 8px; }
+  .designer-hub .hub-actions a,
+  .designer-hub .hub-actions button { font-size: 12px; }
+}
