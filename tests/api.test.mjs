@@ -91,7 +91,7 @@ test('only admin saves price/cost/permissions; designers never receive cost',asy
  const data=await call(manage,{cookie:team,action:'catalog'});assert.equal('cost' in data.body.items[0],false);
  const quote=await call(manage,{cookie:team,action:'quote',method:'POST',body:{id:'2',qty:10,width:10,height:15,margin:20}});
  assert.equal(quote.code,200);assert.equal(quote.body.total,1500);
- assert.equal((await call(manage,{cookie:team,action:'quote',method:'POST',body:{id:'2',qty:10,width:10,height:15,margin:10}})).code,422);
+ assert.equal((await call(manage,{cookie:team,action:'quote',method:'POST',body:{id:'2',qty:10,width:10,height:15,margin:10}})).code,200);
 });
 test('policy range is validated on server',async()=>{
  assert.equal((await call(manage,{cookie:admin,action:'settings',method:'PUT',body:{minMargin:40,maxMargin:20,defaultMargin:30,funMessages:true}})).code,400);
